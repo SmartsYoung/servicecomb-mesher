@@ -23,6 +23,7 @@ import (
 	"github.com/go-chassis/go-chassis/core/handler"
 	"github.com/go-chassis/go-chassis/core/invocation"
 	"github.com/go-mesh/openlogging"
+	"golang.org/x/oauth2"
 	"net/http"
 	"time"
 )
@@ -45,6 +46,23 @@ type Handler struct {
 
 // Handle is provider
 func (oa *Handler) Handle(chain *handler.Chain, inv *invocation.Invocation, cb invocation.ResponseCallBack) {
+	Use(&OAuth2{
+		GrantType: "authorization_code",       // Registration grand type
+		// The default is the authorization code model
+
+		UseConfig: &oauth2.Config{
+			ClientID:     "b552909dddbb9496e6f2",
+			ClientSecret: "0fed4941ed44da1f9d551471ce4067ef09ece459",
+			Scopes:       []string{"all"},
+			RedirectURL:  "http://localhost:8080/oauth/redirect",
+			Endpoint: oauth2.Endpoint{
+				AuthURL:  "https://github.com/login/oauth/authorize",
+				TokenURL: "https://github.com/login/oauth/access_token",
+			},
+		},
+	})
+
+
 	if req, ok := inv.Args.(*http.Request); ok {
 		grantType := req.FormValue("grant_type")
 		if grantType == "" {
@@ -100,6 +118,7 @@ func getToken(code string, cb invocation.ResponseCallBack) (accessToken string, 
 			return "", ErrExpiredToken
 		}
 		accessToken = token.AccessToken
+		// log.Println(accessToken)
 		return accessToken, nil
 	}
 	return "", nil
