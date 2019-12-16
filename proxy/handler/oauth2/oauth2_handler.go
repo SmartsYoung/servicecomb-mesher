@@ -47,7 +47,7 @@ type Handler struct {
 // Handle is provider
 func (oa *Handler) Handle(chain *handler.Chain, inv *invocation.Invocation, cb invocation.ResponseCallBack) {
 	Use(&OAuth2{
-		GrantType: "authorization_code",       // Registration grand type
+		GrantType: "authorization_code", // Registration grand type
 		// The default is the authorization code model
 
 		UseConfig: &oauth2.Config{
@@ -61,7 +61,6 @@ func (oa *Handler) Handle(chain *handler.Chain, inv *invocation.Invocation, cb i
 			},
 		},
 	})
-
 
 	if req, ok := inv.Args.(*http.Request); ok {
 		grantType := req.FormValue("grant_type")

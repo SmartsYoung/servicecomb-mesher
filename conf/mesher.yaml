@@ -26,3 +26,9 @@ admin: #admin API
 #    tracing:
 #      enable: true
 #      serverUri: 127.0.0.1:11800
+
+servicecomb:
+  apm:                              #application performance monitor
+    tracing:
+      enable: true                  #enable tracing ability
+      serverUri: 127.0.0.1:11800    #url of skywalking

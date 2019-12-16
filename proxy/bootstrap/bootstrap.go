@@ -31,6 +31,7 @@ import (
 	"github.com/apache/servicecomb-mesher/proxy/pkg/egress"
 	"github.com/apache/servicecomb-mesher/proxy/pkg/metrics"
 	"github.com/apache/servicecomb-mesher/proxy/pkg/runtime"
+	_ "github.com/apache/servicecomb-mesher/proxy/pkg/skywalking"
 	"github.com/apache/servicecomb-mesher/proxy/resource/v1"
 	"github.com/apache/servicecomb-mesher/proxy/resource/v1/version"
 	"github.com/go-chassis/go-chassis"
