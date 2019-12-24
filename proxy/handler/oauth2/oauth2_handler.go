@@ -116,14 +116,6 @@ func NewOAuth2() handler.Handler {
 	return &Handler{}
 }
 
-func init() {
-	err := handler.RegisterHandler(AuthName, NewOAuth2)
-	if err != nil {
-		openlogging.Error("register handler error: " + err.Error())
-		return
-	}
-}
-
 // WriteBackErr write err and callback
 func WriteBackErr(err error, status int, cb invocation.ResponseCallBack) {
 	r := &invocation.Response{

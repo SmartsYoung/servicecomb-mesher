@@ -18,6 +18,8 @@
 package oauth2
 
 import (
+	"github.com/go-chassis/go-chassis/core/handler"
+	"github.com/go-mesh/openlogging"
 	"golang.org/x/oauth2"
 	"net/http"
 )
@@ -36,4 +38,9 @@ type OAuth2 struct {
 // then register handler to chassis
 func Use(middleware *OAuth2) {
 	auth = middleware
+	err := handler.RegisterHandler(AuthName, NewOAuth2)
+	if err != nil {
+		openlogging.Error("register handler error: " + err.Error())
+		return
+	}
 }
