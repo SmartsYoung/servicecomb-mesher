@@ -31,6 +31,7 @@ import (
 	"github.com/apache/servicecomb-mesher/proxy/pkg/egress"
 	"github.com/apache/servicecomb-mesher/proxy/pkg/metrics"
 	"github.com/apache/servicecomb-mesher/proxy/pkg/runtime"
+	"github.com/apache/servicecomb-mesher/proxy/pkg/skywalking"
 	"github.com/apache/servicecomb-mesher/proxy/resource/v1"
 	"github.com/apache/servicecomb-mesher/proxy/resource/v1/version"
 	"github.com/go-chassis/go-chassis"
@@ -53,6 +54,9 @@ func Start() error {
 		return err
 	}
 	if err := DecideMode(); err != nil {
+		return err
+	}
+	if err := skywalking.Init(); err != nil {
 		return err
 	}
 	metrics.Init()
@@ -117,10 +121,12 @@ func SetHandlers() {
 		chassisHandler.BizkeeperConsumer,
 		chassisHandler.Loadbalance,
 		chassisHandler.Transport,
+		chassisHandler.SkyWalkingConsumer,
 	}, ",")
 	providerChain := strings.Join([]string{
 		chassisHandler.RateLimiterProvider,
 		chassisHandler.Transport,
+		chassisHandler.SkyWalkingProvider,
 	}, ",")
 	consumerChainMap := map[string]string{
 		common.ChainConsumerOutgoing: consumerChain,
@@ -147,3 +153,4 @@ func InitEgressChain() error {
 
 	return handler.CreateChains(common.ConsumerEgress, egressChainMap)
 }
+
